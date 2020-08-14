@@ -31,9 +31,13 @@ class Transfer
   end
 
   def reverse_transfer
-     if @status = "complete"
-        self.execute_transaction.reverse
-        #binding.pry
-     end
-  end
+    if @receiver.balance > @amount and valid? and @status == "complete"
+       #binding.pry
+      @sender.deposit(@amount)
+      @receiver.balance -= @amount
+      return @status = "reversed"
+   else
+     @status = "rejected"
+     return "Transaction rejected. Please check your account balance."
+    end
 end
